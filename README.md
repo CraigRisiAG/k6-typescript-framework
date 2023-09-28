@@ -80,7 +80,7 @@ All the code can be found in the `src` folder. And is written in TypeScript usin
 
 ### **lib** folder
 
-This folder contains bespoke `types` and helper functions. It's highly recommended that you unit test your helper functions (e.g. with [Jest](https://jestjs.io/)). However I've not done that here, just to keep things simple.
+This folder contains bespoke `types` and helper functions. It's highly recommended that you unit test your helper functions (e.g. with [Jest](https://jestjs.io/)). However, I've not done that here, just to keep things simple.
 
 #### The types folder
 
