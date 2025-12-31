@@ -41,14 +41,9 @@ module.exports = {
 
                 options: {
 
-                    presets: [['@babel/typescript']],
-
-                    plugins: [
-
-                        '@babel/plugin-transform-class-properties',
-
-                        '@babel/plugin-transform-object-rest-spread'
-
+                    presets: [
+                        ['@babel/preset-env'],
+                        ['@babel/preset-typescript']
                     ]
 
                 }

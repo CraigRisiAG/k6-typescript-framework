@@ -4,7 +4,11 @@
 
       // Target ECMAScript.
 
-      "target": "ES6",
+      "target": "ES2020",
+
+      // Add lib for modern features like Object.values
+
+      "lib": ["ES2020"],
 
       // Search under node_modules for non-relative imports.
 
