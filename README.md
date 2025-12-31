@@ -130,4 +130,3 @@ If you notice any problems or improvements that could be made to this example fr
 ## TO DO
 
 I can't for the life of me get this framework working with k6's [base compatibility mode](https://github.com/MStoykov/k6-es6) for optimum performance. I'm putting this down to my lack of TypeScript and Webpack/Babel knowledge, so if anyone can solve this, please let me know or raise a PR!
-

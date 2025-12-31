@@ -1,21 +1,6 @@
 {
-
   "presets": [
-
-    [
-
-      "@babel/typescript"
-
-    ]
-
-  ],
-
-  "plugins": [
-
-    "@babel/proposal-class-properties",
-
-    "@babel/proposal-object-rest-spread"
-
-]
-
+    "@babel/preset-env",
+    "@babel/preset-typescript"
+  ]
 }
