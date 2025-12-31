@@ -1,1 +1,1 @@
-export { queryCrocodiles, checkAges } from '../crocodile-management.actions'
+export { queryCrocodiles, checkAges } from '../crocodile-management.actions';

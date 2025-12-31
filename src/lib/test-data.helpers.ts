@@ -1,11 +1,11 @@
-export function randomString(length: number) : string {
+export function randomString(length: number): string {
   const charset = 'abcdefghijklmnopqrstuvwxyz';
   let res = '';
-  while (length--) res += charset[Math.random() * charset.length | 0];
+  while (length--) res += charset[(Math.random() * charset.length) | 0];
   return res;
 }
 
-export function randomCrocodile(){
+export function randomCrocodile() {
   return {
     name: `Name ${randomString(10)}`,
     sex: 'M',
