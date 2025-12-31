@@ -1,0 +1,77 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'yarn'
+    
+    - name: Install dependencies
+      run: yarn install --frozen-lockfile
+    
+    - name: Run type check
+      run: yarn check-types
+    
+    - name: Build project
+      run: yarn build
+    
+    - name: Setup Docker Compose
+      run: |
+        docker compose version || (
+          sudo curl -L "https://github.com/docker/compose/releases/download/v2.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+        )
+    
+    - name: Start monitoring services
+      run: docker compose up -d influxdb grafana
+    
+    - name: Wait for services to be ready
+      run: |
+        echo "Waiting for InfluxDB to be ready..."
+        timeout 30 bash -c 'until curl -s http://localhost:8086/ping > /dev/null; do sleep 1; done' || echo "InfluxDB ready check timed out (may still work)"
+        echo "Waiting for Grafana to be ready..."
+        timeout 30 bash -c 'until curl -s http://localhost:3000 > /dev/null; do sleep 1; done' || echo "Grafana ready check timed out (may still work)"
+        sleep 5
+    
+    - name: Run k6 tests
+      id: k6_tests
+      run: |
+        docker compose run --rm k6 run /scripts/soakTest.bundle.js 2>&1 | tee k6-test-output.log
+      continue-on-error: true
+    
+    - name: Show docker compose logs
+      if: always()
+      run: docker compose logs
+    
+    - name: Upload test logs
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-logs
+        path: |
+          k6-test-output.log
+        retention-days: 30
+    
+    - name: Stop docker compose services
+      if: always()
+      run: docker compose down -v
+    
+    - name: Check test results
+      if: steps.k6_tests.outcome == 'failure'
+      run: |
+        echo "k6 tests failed. Please check the test logs artifact for details."
+        exit 1
