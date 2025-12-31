@@ -1,1 +1,1 @@
-export { registerNewUser } from '../user-management.actions'
+export { registerNewUser } from '../user-management.actions';
